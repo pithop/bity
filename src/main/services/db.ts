@@ -1,10 +1,11 @@
 import { createRxDatabase, addRxPlugin, RxDatabase, RxCollection } from 'rxdb';
-import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite';
+// import { getRxStorageSQLite } from 'rxdb/plugins/storage-sqlite'; // SQLite is part of RxDB Premium
+import { getRxStorageMemory } from 'rxdb/plugins/storage-memory';
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
-import { RxDBMigrationPlugin } from 'rxdb/plugins/migration';
+import { RxDBMigrationPlugin } from 'rxdb/plugins/migration-schema';
 import sqlite3 from 'better-sqlite3';
 import path from 'path';
 import { app } from 'electron';
@@ -65,9 +66,10 @@ export class DatabaseService {
 
         console.log('Initializing database at:', dbPath);
 
-        const storage = getRxStorageSQLite({
-            sqliteBasics: sqlite3
-        });
+        // NOTE: RxStorageSQLite is a premium plugin in RxDB v15+.
+        // For the free version, we use Memory storage for demonstration.
+        // To use SQLite, you would need the premium license or a community adapter.
+        const storage = getRxStorageMemory();
 
         this.db = await createRxDatabase({
             name: 'zeltykiller',
