@@ -34,7 +34,7 @@ jobs:
       # Linux-specific setup for electron-builder (if needed)
       - name: Install Linux Deps
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get update && sudo apt-get install -y libicns-utils graphicsmagick
+        run: sudo apt-get update && sudo apt-get install -y icnsutils graphicsmagick
 
       - name: Build Renderer
         run: npm run build:renderer
