@@ -1,0 +1,66 @@
+{
+  "name": "zelty-killer",
+  "version": "1.0.0",
+  "description": "Offline-First Desktop POS",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:main\"",
+    "dev:renderer": "vite",
+    "dev:main": "wait-on tcp:5173 && tsc -p tsconfig.main.json && electron .",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer": "vite build",
+    "rebuild-deps": "electron-rebuild -f -w better-sqlite3,serialport"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "node-escpos": "^3.0.0",
+    "rxdb": "^15.0.0",
+    "rxjs": "^7.8.0",
+    "serialport": "^12.0.0"
+  },
+  "optionalDependencies": {
+    "electron-edge-js": "^30.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "concurrently": "^8.0.0",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0",
+    "electron-rebuild": "^3.2.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "wait-on": "^7.0.0"
+  },
+  "build": {
+    "appId": "com.zeltykiller.app",
+    "productName": "Zelty Killer",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "resources/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

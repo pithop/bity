@@ -1,0 +1,45 @@
+name: Build/Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      # Linux-specific setup for electron-builder (if needed)
+      - name: Install Linux Deps
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y libicns-utils graphicsmagick
+
+      - name: Build Renderer
+        run: npm run build:renderer
+
+      - name: Build Main
+        run: npm run build:main
+
+      - name: Build Electron App
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --publish always
