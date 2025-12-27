@@ -1,16 +1,17 @@
 {
-  "name": "zelty-killer",
+  "name": "yonyalabs",
   "version": "1.0.0",
   "description": "Offline-First Desktop POS",
   "main": "dist/main/index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:main\"",
     "dev:renderer": "vite",
-    "dev:main": "wait-on tcp:5173 && tsc -p tsconfig.main.json && electron .",
+    "dev:main": "wait-on tcp:5173 && tsc -p tsconfig.main.json && NODE_ENV=development electron . --no-sandbox",
     "build": "npm run build:main && npm run build:renderer",
     "build:main": "tsc -p tsconfig.main.json",
     "build:renderer": "vite build",
-    "rebuild-deps": "electron-rebuild -f -w better-sqlite3,serialport"
+    "rebuild-deps": "electron-rebuild -f -w better-sqlite3,serialport",
+    "dist": "npm run build && electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,9 @@
   "dependencies": {
     "better-sqlite3": "^11.0.0",
     "escpos": "^3.0.0-alpha.6",
+    "framer-motion": "^12.23.26",
+    "lucide-react": "^0.562.0",
+    "node-thermal-printer": "^4.5.0",
     "rxdb": "^15.0.0",
     "rxjs": "^7.8.0",
     "serialport": "^12.0.0"
@@ -30,6 +34,7 @@
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.0.0",
     "concurrently": "^8.0.0",
     "electron": "^30.0.0",
@@ -43,8 +48,8 @@
     "wait-on": "^7.0.0"
   },
   "build": {
-    "appId": "com.zeltykiller.app",
-    "productName": "Zelty Killer",
+    "appId": "com.yonyalabs.pos",
+    "productName": "YonyaLabs POS",
     "directories": {
       "output": "release"
     },
